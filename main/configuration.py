@@ -14,7 +14,7 @@ def create_config_dir():
 
 def read_config():
     """Get the config file and create it with default values, if it doesn't exist."""
-    configFile = create_config_dir() + '/ffmpeg.ini'
+    configFile = create_config_dir() + '/presets.ini'
     config = configparser.ConfigParser()
 
     # Try to get config, if this doesn't work a new default config will be created
@@ -39,7 +39,7 @@ def read_config():
 
 def write_config(config):
     """Write the config file."""
-    configFile = create_config_dir() + '/ffmpeg.ini'
+    configFile = create_config_dir() + '/presets.ini'
 
     if os.path.exists(configFile):
         os.path.remove(configFile)
