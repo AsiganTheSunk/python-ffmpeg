@@ -41,7 +41,7 @@ def retrieve_file_info(path='', flag=''):
                 for line in lines:
                     print line[:-1]
         except:
-            print('Exiftool: Something went wrong retrieving ' + flag + ' from - ' + path)
+            print('Exiftool: Something went wrong retrieving info from - ' + path)
             return
 
     else:
