@@ -9,10 +9,15 @@ TRACK_NUMBER = 'Track Number'
 TRACK_NAME = 'Track Name'
 TRACK_LANGUAGE = 'Track Language'
 
+#TODO Lanzarla con un hilo independiente.
+class ExifTool():
+    def __init__(self):
+        return
+
+
 def extract_metadata(path='', dest_path=''):
 
     try:
-        print ('Exiftool: Retrieving Metadata from - ' + path)
         COMMAND = 'exiftool ' + path + ' >' + dest_path
         subprocess.call(COMMAND, shell=True)
         print('Exiftool: Successfully retrieved Metadata- ' + path)
@@ -22,14 +27,6 @@ def extract_metadata(path='', dest_path=''):
         return
 
 def inyect_metadata(path='', dest_path=''):
-    return
-
-
-def extract_audio_info():
-    return
-
-
-def extract_video_codec():
     return
 
 
@@ -84,7 +81,6 @@ def retrieve_video_info(path=''):
 def retrieve_audio_info(path=''):
     retrieve_audio_codec(path=path)
     retrieve_track_name(path=path)
-
 
 
 def retrieve_subtitles_info(path=''):
