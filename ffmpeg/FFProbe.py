@@ -53,3 +53,13 @@ class FFProbe():
             self.streams.append(ffstream)
 
         return self.streams
+
+    def stream_count(self, key):
+        counter = 0
+        for item in self.streams:
+            if item.codec_type in key:
+                counter +=1
+
+        return counter
+
+

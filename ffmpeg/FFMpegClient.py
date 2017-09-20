@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 
 import subprocess, os
-from ffmpeg.exiftool import extract_metadata as exifmetadata
-
-from ffmpeg.exiftool import retrieve_number_of_streams
+from ffmpeg.FFProbe import FFProbe
 
 class FFmpegClient():
     def __init__(self):
         # load default preset
         # params and stuff here
         # inicializarlo en un thread
-        # ver como hacer redireccion del progreso usando str_erro, str_dev etc etc, con pipes probablemente.
+        # ver como hacer redireccion del progreso usando str_erro, str_dev etc etc, con pipes probablemente,
+        # usar como ejemplo ffprobe3
         self.params = {}
 
     def extract_all_subtitles(self, path='', dest_path=''):
-        n_streams = retrieve_number_of_streams(path, 'SUBTITLE')
+        ffprobe = FFProbe(path)
+        ffprobe.get_metadata()
+        n_streams = ffprobe.stream_count('subtitle')
 
         for index in range(0, n_streams, 1):
             COMMAND = 'ffmpeg -v quiet -i ' + path + ' -map 0:s:' + str(index) + ' ' + (dest_path + str(index) + '.srt')
@@ -23,7 +24,9 @@ class FFmpegClient():
         return
 
     def extract_all_audio(self, path='', dest_path=''):
-        n_streams = retrieve_number_of_streams(path, 'AUDIO')
+        ffprobe = FFProbe(path)
+        ffprobe.get_metadata()
+        n_streams = ffprobe.stream_count('audio')
 
         DISABLE_VIDEO_RECORDING = ' -vn '
         AUDIO_SAMPLING = ' -ar 44100 '
@@ -59,11 +62,6 @@ class FFmpegClient():
             print 'Unable to extract subtitles'
             return False
 
-
-    def inyect_audio(self, path='', dest_path=''):
-        return
-
-
     def extract_subtitles(self, path='', dest_path=''):
         try:
             INPUT_FILE = ' -i '
@@ -81,17 +79,11 @@ class FFmpegClient():
     def inyect_subtitles(self, path='', dest_path=''):
         return
 
-
-    def extract_metadata(self):
-        #TODO call to exiftool
-        exifmetadata()
+    def inyect_audio(self, path='', dest_path=''):
         return
-
 
     def inyect_metadata(self):
         return
 
-
     def encode_file(self, path='', dest_path=''):
         return
-
