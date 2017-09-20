@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import subprocess, os
-import re
+from ffprobe3 import FFProbe
 
 AUDIO_CODEC = 'Audio Codec ID'
 VIDEO_CODEC = 'Video Codec ID'
@@ -73,17 +73,30 @@ def retrieve_track_language(path=''):
 def retrieve_track_number(path=''):
     return retrieve_file_info(path=path, flag=TRACK_NUMBER)
 
-
 def retrieve_video_info(path=''):
     retrieve_video_codec(path=path)
-
 
 def retrieve_audio_info(path=''):
     retrieve_audio_codec(path=path)
     retrieve_track_name(path=path)
 
-
 def retrieve_subtitles_info(path=''):
     retrieve_track_number(path=path)
 
+def retrieve_number_of_streams(path='', stream_type=''):
+    metadata = FFProbe(path)
+    counter = 0
 
+    if (stream_type is 'VIDEO'):
+        for stream in metadata.streams:
+            if stream.is_video():
+                counter +=1
+    elif (stream_type is 'AUDIO'):
+        for stream in metadata.streams:
+            if stream.is_audio():
+                counter +=1
+    elif (stream_type is 'SUBTITLE'):
+        for stream in metadata.streams:
+            if stream.is_subtitle():
+                counter +=1
+    return counter
