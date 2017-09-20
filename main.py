@@ -25,16 +25,11 @@ def main():
     # ffmpeg.extract_all_subtitles(mkv_multi_source, subtitle_output)
     # ffmpeg.extract_all_audio(mkv_multi_source, audio_output)
 
-    ffprobe = FFProbe(mkv_multi_source)
-    ffprobe.get_metadata()
-    streams = ffprobe.parse_data()
+    ffprobe = FFProbe(mkv_source)
+    streams = ffprobe.get_metadata()
     for i in streams:
         print str(i)
 
-'''
-ffprobe -loglevel error -show_entries stream=index,codec_type,codec_name:stream_tags=language SampleMultiAS.mkv
-
-'''
 
 
 if __name__ == '__main__':
