@@ -2,6 +2,10 @@
 
 import subprocess, os
 from ffmpeg.FFProbe import FFProbe
+from ffmpeg.config import presets
+import re
+import pexpect
+
 
 class FFmpegClient():
     def __init__(self):
@@ -139,6 +143,7 @@ class FFmpegClient():
             return False
 
     # TODO Future: params={}
+    # TODO pipe.quote() - 'pipe.quote' en los paths que se nos dan. shlex.quote()!
     # Example line:
     # 'ffmpeg -i input -c copy -metadata key1=value1 -metadata:s:v key2=value2 -metadata:s:a:0 key3=value3 out.mkv'
     def inyect_metadata(self, path='', dest_path='', params={}):
@@ -174,7 +179,26 @@ class FFmpegClient():
         
     '''
 
-    def encode_file(self, path='', dest_path=''):
-        return
+    def encode_file(self, path='', dest_path='', params=presets['default-preset']):
+        try:
+            COMMAND = 'ffmpeg -v quiet -y -i {path} -map 0:v -map 0:a -map 0:s -c:v libx265 -preset {preset} -x265-params crf={crf}:pools=none' \
+                      ' -threads {threads} -c:a {audio} -ab {bitrate} -c:s copy {dest}'.format(
+                path=path,
+                dest=dest_path,
+                preset=params['preset'],
+                crf=params['crf'],
+                threads=params['threads'],
+                audio=params['audio'],
+                bitrate=params['kbitrate-audio']
+            )
 
+            print COMMAND
 
+            p = subprocess.Popen(COMMAND, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, universal_newlines=True)
+            #frames = re.search('frame= *\d+', raw_data, re.IGNORECASE).group(0)
+            #print frames
+            p.stdout.close()
+            return True
+        except Exception as e:
+            print e
+            return False

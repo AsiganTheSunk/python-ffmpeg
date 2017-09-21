@@ -5,6 +5,7 @@ run:
 	python main.py
 
 clean:
+	rm -f /home/asigan/python-ffmpeg/test/samples/NewSampleMultiAS.mkv
 	rm -f /home/asigan/python-ffmpeg/test/samples/*.srt
 	rm -f /home/asigan/python-ffmpeg/test/samples/*.ass
 	rm -f /home/asigan/python-ffmpeg/test/samples/*.mp3
