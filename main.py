@@ -1,33 +1,33 @@
 #!/usr/bin/env python
 from ffmpeg.FFMpegClient import FFmpegClient
+from ffmpeg.FFProbe import FFProbe
+
 import os
 import subprocess
+import json
 
 def main():
+    mkv_source = str(os.getcwd()) + '/test/samples/SampleVideo.mkv'
     mkv_multi_source = str(os.getcwd()) + '/test/samples/SampleMultiAS.mkv'
+
+    new_mkv_multi_source = str(os.getcwd()) + '/test/samples/NewSampleMultiAS.mkv'
     subtitle_output = str(os.getcwd()) + '/test/samples/SampleSubtitle'
     audio_output = str(os.getcwd()) + '/test/samples/SampleAudio'
 
     ffmpeg = FFmpegClient()
-    # ffmpeg.extract_subtitles(mkv_multi_source, (subtitle_output + '.ass'))
-    # ffmpeg.extract_audio(mkv_multi_source, (audio_output + '.mp3'))
 
-    ffmpeg.extract_all_subtitles(mkv_multi_source, subtitle_output)
-    ffmpeg.extract_all_audio(mkv_multi_source, audio_output)
+    #ffmpeg.extract_all_subtitles(mkv_multi_source, subtitle_output)
+    #ffmpeg.extract_all_audio(mkv_multi_source, audio_output)
+    #ffmpeg.convert_srt_to_ass('/home/asigan/python-ffmpeg/test/samples/SampleSubtitle4.srt','/home/asigan/python-ffmpeg/test/samples/NewSampleSubtitle4')
+    ffmpeg.inyect_subtitle(mkv_multi_source, '/home/asigan/python-ffmpeg/test/samples/NewSampleSubtitle4.ass', '/home/asigan/python-ffmpeg/test/samples/NewSampleMultiAS.mkv')
 
-    '''
-        Esto para recuperar la salida del comando con un pipe y tratarlo sin necesidad de fichero intermedio.
-    '''
-    cmd = 'ffprobe -v quiet -print_format json -show_format ' + mkv_multi_source
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-    print p.stdout.read()
+    ffmpeg.inyect_audio('/home/asigan/python-ffmpeg/test/samples/NewSampleMultiAS.mkv', '/home/asigan/python-ffmpeg/test/samples/SampleAudio0.mp3', '/home/asigan/python-ffmpeg/test/samples/NewSampleMultiAS.mkv')
 
+    # TODO Further Testing!!
+    #ffmpeg.inyect_metadata(mkv_multi_source, mkv_multi_source)
 
-    #for a in iter(p.stdout.readline, b''):
-    #    print a.decode('UTF-8')
-
-
-    p.stdout.close()
+    ffprobe = FFProbe('/home/asigan/python-ffmpeg/test/samples/NewSampleMultiAS.mkv')
+    ffprobe.get_general_metadata()
 
 
 if __name__ == '__main__':
