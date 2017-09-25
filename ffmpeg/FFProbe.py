@@ -3,7 +3,7 @@
 import subprocess, os
 import json
 from ffmpeg.FFStream import FFStream
-
+from pipes import quote
 
 class FFProbe():
     def __init__(self, input_file):
@@ -11,7 +11,7 @@ class FFProbe():
         self.streams = []
 
     def get_general_metadata(self):
-        COMMAND = 'ffprobe -v quiet -print_format json -show_format -show_entries streams ' + str(self.input_file)
+        COMMAND = 'ffprobe -v quiet -print_format json -show_format -show_entries streams ' + str(quote(self.input_file))
 
         p = subprocess.Popen(COMMAND, stdout=subprocess.PIPE, shell=True)
         raw_data = p.stdout.read()
@@ -21,18 +21,18 @@ class FFProbe():
     def get_metadata(self):
         COMMAND = 'ffprobe -v quiet -print_format json -show_format ' \
                   '-show_entries stream=index,profile,codec_type,codec_name,width,height:stream_tags=language ' \
-                  + str(self.input_file)
+                  + str(quote(self.input_file))
 
         p = subprocess.Popen(COMMAND, stdout=subprocess.PIPE, shell=True)
         raw_data = p.stdout.read()
         data = json.loads(raw_data)
         p.stdout.close()
+
+        profile=width=height=language=bit_rate= ''
+
+        duration = data['format']['duration']
+
         for item in data['streams']:
-            profile = ''
-            width = ''
-            height = ''
-            language = ''
-            bit_rate = ''
 
             index = item['index']
             codec_type = item['codec_type']
@@ -59,7 +59,7 @@ class FFProbe():
                 except:
                     language = ''
 
-            ffstream = FFStream(index, profile, codec_type, codec_name, bit_rate,width, height, language)
+            ffstream = FFStream(index, profile, codec_type, codec_name, bit_rate,width, height, language, duration)
             self.streams.append(ffstream)
 
         return self.streams
