@@ -82,7 +82,6 @@ def main():
     osmosis_output_dest = '/media/asigan/1AD0F286D0F26801/osmosis_audio_delayed_test-new'
     osmosis_source_2 = '/media/asigan/1AD0F286D0F26801/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT.mkv'
 
-    #ffmpeg.inyect_audio_b(path=osmosis_source_2, apath= osmosis_output + '.mp3', dest=osmosis_output_dest+'cuarto')
     #ffmpeg.inyect_audio(path=osmosis_output_dest+'cuarto.mkv', apath='/media/asigan/1AD0F286D0F26801/audio_samples/osmosis_audio_test0.mp3', dest=osmosis_output_dest+'DUAL')
     #ffmpeg.inyect_audio_c(path=osmosis_source_2, apath= osmosis_output + '.mp3', dest=osmosis_output_dest+'testtuto3', master=True)
 
@@ -97,13 +96,28 @@ def main():
     # ffmpeg -y -i '/media/asigan/1AD0F286D0F26801/Osmosis Jones.720p.(Spa2.0)(Eng5.1).mkv' -map 0:a:1 -vn -ar 44100 -ac 1 -ab 320k -f mp3 '/media/asigan/1AD0F286D0F26801/osmosis_audio_test_esp.mp3'
 
     ffclient = FFClient()
-    #ffclient.sync_audio_tracks(master='/media/asigan/1AD0F286D0F26801/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT.mkv',
-    #                           slave='/media/asigan/1AD0F286D0F26801/Osmosis Jones.720p.(Spa2.0)(Eng5.1).mkv',
-    #                           dest='/media/asigan/1AD0F286D0F26801/real_test',
-    #                           m_stream=0, s_stream=1, debug=False, quiet=False, overwrite=False)
+    # ffclient.sync_audio_tracks(master='/media/asigan/1AD0F286D0F26801/OsmosisTest/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT.mkv',
+    #                           slave='/media/asigan/1AD0F286D0F26801/OsmosisTest/Osmosis Jones.720p.(Spa2.0)(Eng5.1).mkv',
+    #                           dest='/media/asigan/1AD0F286D0F26801/osmosis_test',
+    #                           m_stream=0, s_stream=1, debug=True, quiet=True, overwrite=True)
 
-    ffprobe = FFProbe('/media/asigan/1AD0F286D0F26801/real_test/rebuilded_master_file.mkv')
-    ffprobe.get_general_metadata()
+    # ffclient.sync_audio_tracks(master='/media/asigan/1AD0F286D0F26801/OsmosisTest/Osmosis Jones.720p.(Spa2.0)(Eng5.1).mkv',
+    #                           slave = '/media/asigan/1AD0F286D0F26801/OsmosisTest/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT/Osmosis.Jones.2001.1080p.HDTV.x264.DD5.1-FGT.mkv',
+    #                           dest='/media/asigan/1AD0F286D0F26801/real_test',
+    #                           m_stream=0, s_stream=0, debug=False, quiet=False, overwrite=False)
+
+    # ffclient.sync_audio_tracks(
+    #     master='/media/asigan/1AD0F286D0F26801/PulpFiction/Pulp.Fiction.1994.720p.BluRay.H264.AAC-RARBG/Pulp.Fiction.1994.720p.BluRay.H264.AAC-RARBG.mp4',
+    #     slave='/media/asigan/1AD0F286D0F26801/PulpFiction/Pulp.Fiction.DVD+VHS.Galego.by.XibaD.[www.ProxectoMeiga.co.nr].ogm',
+    #     dest='/media/asigan/1AD0F286D0F26801/pulp_test',
+    #     m_stream=0, s_stream=0, debug=False, quiet=True, overwrite=False)
+
+    ffclient.sync_audio_tracks(
+        master='/media/asigan/1AD0F286D0F26801/WasabiTest/Wasabi.2001.1080p.BluRay.DTS.x264-CRiSC [PublicHD]/Wasabi.2001.1080p.BluRay.DTS.x264-CRiSC.mkv',
+        slave='/media/asigan/1AD0F286D0F26801/WasabiTest/Wasabi[HDrip][Spanish][www.lokotorrents.com]/Wasabi[HDrip][Spanish][www.lokotorrents.com].avi',
+        dest='/media/asigan/1AD0F286D0F26801/wasabi_test',
+        m_stream=0, s_stream=0, debug=True, quiet=True, overwrite=False)
+
 
 if __name__ == '__main__':
      main()

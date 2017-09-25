@@ -205,8 +205,8 @@ class FFMpeg():
 
     def eval_mapping(self, master):
         if master:
-            return '-map 0:v:? -map 1:0 -map 0:a -map 0:s'
-        return '-map 0:v -map 0:a -map 1:0 -map 0:s'
+            return '-map 0:v:? -map 1:0 -map 0:a -map 0:s:?'
+        return '-map 0:v -map 0:a -map 1:0 -map 0:s:?'
 
     def inyect_audio_c(self, path, apath, dest, master=False, debug=False, quiet=False, overwrite=False):
         _quiet, _overwrite = self.eval_commands(quiet=quiet, overwrite=overwrite)
@@ -224,7 +224,7 @@ class FFMpeg():
                 format=path[-3:],
                 aformat=apath[-3:],
                 mapping=_master,
-                threads=self.default_threads
+                threads=3
             )
 
             if debug:
@@ -327,7 +327,7 @@ class FFMpeg():
         _quiet, _overwrite = self.eval_commands(quiet=quiet, overwrite=overwrite)
 
         try:
-            COMMAND = 'ffmpeg {overwrite} {quiet} -i concat:{tracks} -threads {threads} -codec copy {dest}.{audio}'.format(
+            COMMAND = 'ffmpeg {overwrite} {quiet} -i concat:{tracks} -threads {threads} -acodec copy {dest}.{audio}'.format(
                 overwrite=_overwrite,
                 quiet=_quiet,
                 dest=quote(dest),
@@ -354,7 +354,7 @@ class FFMpeg():
         # Cut the final seconds to match the lenght of the original audio
         # ffmpeg -i '/media/asigan/1AD0F286D0F26801/audio_samples/osmosis_audio_testb1.mp3' -ss 0.6734 -to 5720.477000 -c copy '/media/asigan/1AD0F286D0F26801/audio_samples/audio_shorter.mp3'
         try:
-            COMMAND = 'ffmpeg {overwrite} {quiet} -i {path} -ss {ini} -to {end} -codec copy -threads {threads} {dest}.{audio}'.format(
+            COMMAND = 'ffmpeg {overwrite} {quiet} -i {path} -ss {ini} -to {end} -acodec copy -threads {threads} {dest}.{audio}'.format(
                 overwrite=_overwrite,
                 quiet=_quiet,
                 path=quote(path),

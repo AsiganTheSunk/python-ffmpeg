@@ -102,13 +102,13 @@ def find_delay(time_pairs):
         else:
             t_diffs[delta_t] = 1
     t_diffs_sorted = sorted(t_diffs.items(), key=lambda x: x[1])
-    print t_diffs_sorted
+    #print t_diffs_sorted
     time_delay = t_diffs_sorted[-1][0]
 
     return time_delay
 
 # Find time delay between two video files
-def align(wav1, wav2, fft_bin_size=1024, overlap=0, box_height=512, box_width=43, samples_per_box=7):
+def align(wav1, wav2, fft_bin_size=1024, overlap=0, box_height=512, box_width=50, samples_per_box=4):
     # Process first file
     wavfile1 = wav1
     raw_audio1, rate = read_audio(wavfile1)
@@ -119,7 +119,7 @@ def align(wav1, wav2, fft_bin_size=1024, overlap=0, box_height=512, box_width=43
     # Process second file
     wavfile2 = wav2
     raw_audio2, rate = read_audio(wavfile2)
-    bins_dict2 = make_horiz_bins(raw_audio2[:44100*60], fft_bin_size, overlap, box_height)
+    bins_dict2 = make_horiz_bins(raw_audio2[:44100*120], fft_bin_size, overlap, box_height)
     boxes2 = make_vert_bins(bins_dict2, box_width)
     ft_dict2 = find_bin_max(boxes2, samples_per_box)
 
